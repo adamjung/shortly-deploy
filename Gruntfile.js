@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         separator: ';',
       },
       dist: {
-        src: ['public/**/*.js'],
+        src: ['public/uglified/**/*.js'],
         dest: 'public/dist/compiled.js',
       }
     },
@@ -28,10 +28,17 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      my_target: {
-        files: {
-          'public/dist/compiled.js': ['public/dist/compiled.js']
-        }
+      dynamic_mappings: {
+        files: [
+          {
+            expand: true,
+            cwd: 'public/',
+            src: '**/*.js',
+            dest: 'public/uglified/',
+            ext: '.min.js',
+            extDot: 'first'
+          }
+        ]
       }
     },
 
@@ -48,10 +55,10 @@ module.exports = function(grunt) {
         }
       }
     },
-//rebecca was here
+
     watch: {
       options: {
-        livereload: true, //chan added this, self-explanatory (if it works)
+        livereload: true,
       },
       scripts: {
         files: [
@@ -71,7 +78,6 @@ module.exports = function(grunt) {
 
     shell: {
       remotePush: {
-        // git push live master
         command: 'git push live master'
       }
     },
@@ -100,8 +106,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('startup', ['nodemon']);
 
-  grunt.registerTask('build', [
-  ]);
+  grunt.registerTask('build', ['uglify', 'concat']);
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
@@ -113,8 +118,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     'test',
-    'concat',
+    'uglify',
+    'concat'
   ]);
 
-
+  grunt.registerTask('default', ['test', 'startup', 'deploy', 'cssmin']);
 };
