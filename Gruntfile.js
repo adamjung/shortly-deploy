@@ -51,7 +51,7 @@ module.exports = function(grunt) {
     cssmin: {
       target: {
         files: {
-          'output.css': ['public/style.css']
+          'public/uglified/output.css': ['public/style.css']
         }
       }
     },
@@ -78,7 +78,7 @@ module.exports = function(grunt) {
 
     shell: {
       remotePush: {
-        command: 'git push live master'
+        command: 'git add . \n git commit -m \' whatevs \' \n git push live master'
       }
     },
   });
@@ -110,16 +110,20 @@ module.exports = function(grunt) {
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
-      // add your production server task here
+      // assume we have git remote live is setup
+      // git push to the production droplet (bare folder or /var/repo/site.git)
+      grunt.task.run(['shell']);
     } else {
-      grunt.task.run([ 'server-dev' ]);
+      grunt.task.run(['server-dev']);
     }
   });
 
   grunt.registerTask('deploy', [
+    'eslint',
     'test',
     'uglify',
-    'concat'
+    'concat',
+    'cssmin'
   ]);
 
   grunt.registerTask('default', ['test', 'startup', 'deploy', 'cssmin']);
