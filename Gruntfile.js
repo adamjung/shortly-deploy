@@ -3,6 +3,13 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: ['/public/**/*.js'],
+        dest: '/public/dist/compiled.js',
+      }
     },
 
     mochaTest: {
@@ -21,18 +28,31 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      my_target: {
+        files: {
+          'public/dist/compiled.js': ['public/dist/compiled.js']
+        }
+      }
     },
 
     eslint: {
       target: [
-        // Add list of files to lint here
+        'public/dist/compiled.js'
       ]
     },
 
     cssmin: {
+      target: {
+        files: {
+          'output.css': ['public/style.css']
+        }
+      }
     },
-
+//rebecca was here
     watch: {
+      options: {
+        livereload: true,//chan added this, self-explanatory (if it works)
+      },
       scripts: {
         files: [
           'public/client/**/*.js',
@@ -50,7 +70,9 @@ module.exports = function(grunt) {
     },
 
     shell: {
-      prodServer: {
+      remotePush: {
+        // git push live master
+        command: 'git push live master'
       }
     },
   });
@@ -90,7 +112,9 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
-    // add your deploy tasks here
+    'test',
+    'concat',
+    'uglify',
   ]);
 
 
