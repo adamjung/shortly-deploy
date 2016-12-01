@@ -78,7 +78,7 @@ module.exports = function(grunt) {
 
     shell: {
       remotePush: {
-        command: 'git add . \n git commit -m \'whatevs \'\ngit push live master'
+        command: 'git add . \n git commit -m \'whatevs \'\ngit push live master\n'
       }
     },
   });
