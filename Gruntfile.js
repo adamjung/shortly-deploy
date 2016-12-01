@@ -8,7 +8,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['public/**/*.js'],
-        dest: 'public/compiled.js',
+        dest: 'public/dist/compiled.js',
       }
     },
 
@@ -51,7 +51,7 @@ module.exports = function(grunt) {
 //rebecca was here
     watch: {
       options: {
-        livereload: true,//chan added this, self-explanatory (if it works)
+        livereload: true, //chan added this, self-explanatory (if it works)
       },
       scripts: {
         files: [
